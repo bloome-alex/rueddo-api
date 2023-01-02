@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "babel-node src/index.js",
+    "start": "BABEL_DISABLE_CACHE=1 babel-node src/index.js --exec js",
     "dev": "BABEL_DISABLE_CACHE=1 nodemon src/index.js --exec babel-node -e js"
   },
   "keywords": [],
