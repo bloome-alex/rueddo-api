@@ -5,7 +5,7 @@ import { ApiRoutes } from '../src/routes'
 
 class Server{
     constructor(){
-        this.port = process.env.APP_PORT
+        this.port = process.env.PORT
         this.connectToDatabase()
         this.app = express()
         this.middlewares()
