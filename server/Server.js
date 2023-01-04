@@ -2,6 +2,10 @@ import express from 'express'
 import cors from 'cors'
 import { ApiRoutes } from '../src/routes'
 import { authenticationUser } from '../src/services/UserServices'
+
+import fs from 'fs'
+import webpush from '../src/webpush'
+
 class Server{
     constructor(){
         this.port = process.env.PORT
@@ -49,6 +53,15 @@ class Server{
             })
 
             socket.on('client_need_vehicle', ()=>{
+                try {
+                    const subscription = JSON.parse(fs.readFileSync('./src/webpush/subscription.json'))
+                    webpush.sendNotification(subscription, JSON.stringify({
+                        title: 'Nuevo Viaje!',
+                        message: 'Hay un nuevo viaje en la plataforma!'
+                    }))
+                } catch (error) {
+                    console.log('error: ', error)
+                }
                 this.io.emit('driver_new_travel')
             })
 
