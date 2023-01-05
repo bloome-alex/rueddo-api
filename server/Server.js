@@ -56,8 +56,7 @@ class Server{
                 try {
                     const subscription = JSON.parse(fs.readFileSync('./src/webpush/subscription.json'))
                     webpush.sendNotification(subscription, JSON.stringify({
-                        title: 'Nuevo Viaje!',
-                        message: 'Hay un nuevo viaje en la plataforma!'
+                        title: 'Oportunidad de Viaje!'
                     }))
                 } catch (error) {
                     console.log('error: ', error)
