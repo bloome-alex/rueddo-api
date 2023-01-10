@@ -1,10 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import { ApiRoutes } from '../src/routes'
-import { authenticationUser } from '../src/services/UserServices'
-
-import fs from 'fs'
-import webpush from '../src/webpush'
+import { ClientSockets } from './clientSockets'
+import { DriverSockets } from './driverSockets'
 
 class Server{
     constructor(){
@@ -28,58 +26,17 @@ class Server{
 
     sockets(){
         this.io.on('connection', (socket)=>{
-            socket.on('client_connected', (token) => {
-                try {
-                    const user = authenticationUser({token})
-                    socket.emit('CLIENT_CONNECT', {
-                        msg: 'Un cliente se ha conectado',
-                        client: user
-                    })
-                } catch (error) {
-                    socket.emit('ERROR_TO_CONNECT_CLIENT')
-                }
-            })
+            console.log('nuevo socket: ', socket.id)
+            //client sockets declaration
+            const clientSockets = new ClientSockets(socket, this.io)
+            clientSockets.clientConnected()
+            clientSockets.clientNeedVehicle()
 
-            socket.on('driver_connected', (token) => {
-                try {
-                    const user = authenticationUser({token})
-                    socket.emit('DRIVER_CONNECTED', {
-                        msg: 'Un driver se ha conectado',
-                        client: user
-                    })
-                } catch (error) {
-                    socket.emit('ERROR_TO_CONNECT_DRIVER')
-                }
-            })
+            //driver sockets declaration
 
-            socket.on('client_need_vehicle', ()=>{
-                try {
-                    const subscription = JSON.parse(fs.readFileSync('./src/webpush/subscription.json'))
-                    webpush.sendNotification(subscription, JSON.stringify({
-                        title: 'Oportunidad de Viaje!'
-                    }))
-                } catch (error) {
-                    console.log('error: ', error)
-                }
-                this.io.emit('driver_new_travel')
-            })
-
-            socket.on('accept_travel', ()=> {
-                this.io.emit('CLIENT_TRAVEL_ACCEPTED')
-            })
-
-            console.log('nuevo socket conectado: ', socket.id)
-            
-            socket.on('increment', (counter) => {
-                console.log('increment')
-                this.io.sockets.emit('COUNTER_INCREMENT', counter + 1)
-            })
-
-            socket.on('decrement', (counter) => {
-                console.log('decrement')
-                this.io.sockets.emit('COUNTER_DECREMENT', counter - 1)
-            })
-        
+            const driverSockets = new DriverSockets(socket, this.io)
+            driverSockets.driverConnected()
+            driverSockets.acceptTravel()
         })
     }
 

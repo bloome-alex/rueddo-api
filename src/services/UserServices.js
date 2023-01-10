@@ -3,12 +3,17 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 
-export const registerUser = async({email, password, role}) => {
-    const user = new User({
+export const registerUser = async({email, password, role, details}) => {
+    const newUser = {
         email,
         password,
         role
-    })
+    }
+
+    if(role == 'DRIVER') newUser.driverDetails = details
+    //if(role == 'CLIENT') newUser.clientDetails = details
+    
+    const user = new User(newUser)
     return await user.save()
 }
 
