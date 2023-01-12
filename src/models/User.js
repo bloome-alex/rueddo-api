@@ -6,9 +6,7 @@ const vehicleDetailsSchema = new mongoose.Schema({
   mark: {type: String, required: false, index: false},
   model: {type: String, required: false, index: false},
   year: {type: String, required: false, index: false},
-  longSpace: {type: Number, required: false, index: false},
-  heightSpace: {type: String, required: false, index: false},
-  widthSpace: {type: String, required: false, index: false},
+  carType: {type: String, required: false, index: false}
 })
 
 const driverDocumentationSchema = new mongoose.Schema({
@@ -34,11 +32,23 @@ const driverDetailsSchema = new mongoose.Schema({
 })
 
 const clientDetailsSchema = new mongoose.Schema({
+  clientRole: {type: String, required: false, index: false},
   name: {type: String, required: false, index: false},
+  socialReason: {type: String, required: false, index: false},
+  weekHours: {type: String, required: false, index: false},
+  cuit: {type: String, required: false, index: false},
+  surname: {type: String, required: false, index: false},
+  birthDate: {type: String, required: false, index: false},
+  address: {type: String, required: false, index: false},
+  floor: {type: String, required: false, index: false},
+  email: {type: String, required: false, index: false},
+  phone: {type: String, required: false, index: false},
+  productNews: {type: Boolean, required: false, index: false},
+  termsAndConditions: {type: Boolean, required: false, index: false}
 })
 
 const UserSchema = new mongoose.Schema({
-  email: {type: String, required: true, index: false},
+  email: {type: String, required: true, unique:true, index: true},
   password: {type: String, required: true, index: false},
   role: {type: String, enum: ['DRIVER', 'CLIENT']},
   driverDetails: driverDetailsSchema,

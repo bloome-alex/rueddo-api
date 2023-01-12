@@ -8,8 +8,6 @@ import {
     loginController
 } from '../controllers'
 
-import webpush from '../webpush'
-
 const ApiRoutes = express.Router()
 
 ApiRoutes.post('/register', 

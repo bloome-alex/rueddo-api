@@ -2,7 +2,6 @@ import { User } from "../models/User"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-
 export const registerUser = async({email, password, role, details}) => {
     const newUser = {
         email,
@@ -11,7 +10,7 @@ export const registerUser = async({email, password, role, details}) => {
     }
 
     if(role == 'DRIVER') newUser.driverDetails = details
-    //if(role == 'CLIENT') newUser.clientDetails = details
+    if(role == 'CLIENT') newUser.clientDetails = details
     
     const user = new User(newUser)
     return await user.save()
