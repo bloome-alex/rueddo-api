@@ -31,6 +31,7 @@ class Server{
             const clientSockets = new ClientSockets(socket, this.io)
             clientSockets.clientConnected()
             clientSockets.clientNeedVehicle()
+            clientSockets.clientCancelNeedVehicle()
 
             //driver sockets declaration
 

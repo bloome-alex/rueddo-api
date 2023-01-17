@@ -49,7 +49,8 @@ const clientDetailsSchema = new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema({
   email: {type: String, required: true, unique:true, index: true},
-  password: {type: String, required: true, index: false},
+  password: {type: String, required: false, index: false},
+  authenticatedWithGoogle: {type: Boolean, required: false, index: false},
   role: {type: String, enum: ['DRIVER', 'CLIENT']},
   driverDetails: driverDetailsSchema,
   clientDetails: clientDetailsSchema

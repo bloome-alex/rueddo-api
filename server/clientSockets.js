@@ -24,6 +24,13 @@ export class ClientSockets {
         })
     }
 
+    clientCancelNeedVehicle(){
+        this.socket.on('client_cancel_need_vehicle', ()=>{
+            console.log('el cliente cancelo el viaje')
+            this.io.emit('client_cancel_need_vehicle')
+        })
+    }
+
     clientNeedVehicle(){
         this.socket.on('client_need_vehicle', async ({client: token, travel})=>{
             try {
@@ -65,8 +72,6 @@ export class ClientSockets {
                     payLocation,
                     help
                 }
-
-                console.log('newTravel: ', newTravel)
 
                 const travelCreated = await createTravel(newTravel)
 

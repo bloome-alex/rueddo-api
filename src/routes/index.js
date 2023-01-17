@@ -5,7 +5,9 @@ import fs from 'fs'
 import {
     authenticationController,
     registerController,
-    loginController
+    loginController,
+    registerGoogleController,
+    loginGoogleController
 } from '../controllers'
 
 const ApiRoutes = express.Router()
@@ -14,8 +16,13 @@ ApiRoutes.post('/register',
     body('email').isEmail(),
     registerController)
 
+ApiRoutes.post('/register-google', registerGoogleController)
+
 ApiRoutes.post('/login',
     loginController )
+
+ApiRoutes.post('/login-google',
+    loginGoogleController )
 
 ApiRoutes.post('/auth', 
     authenticationController )
