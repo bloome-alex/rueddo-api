@@ -7,7 +7,7 @@ const destinationsSchema = new mongoose.Schema({
     floor: {type: String, required: false, index: false},
     contact: {type: String, required: false, index: false},
     phone: {type: String, required: false, index: false},
-    optionalMessage: {type: String, required: false, index: false}
+    message: {type: String, required: false, index: false}
 })
 
 const originSchema = new mongoose.Schema({

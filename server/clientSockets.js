@@ -33,37 +33,38 @@ export class ClientSockets {
 
     clientNeedVehicle(){
         this.socket.on('client_need_vehicle', async ({client: token, travel})=>{
+            console.log('travel: ', travel)
             try {
-                const {destinationAddress, originAddress, help, methodOfPay, payLocation, originlng, originlat, originDetails, destinationlng, destinationlat, destinationDetails, delivery, vehicle} = travel
-
-                const {floor: originFloor, contact: originContact, phone: originPhone, message: originMessage} = originDetails
-
-                const {floor: destinationFloor, contact: destinationContact, phone: destinationPhone, message: destinationMessage} = destinationDetails
+                const {origin, destinations, originDetails, destinationsDetails, delivery, vehicle, help, floors, secure, methodOfPay, payLocation} = travel
 
                 const client = authenticationUser({token})
                 if(!client) throw new Error('Unauthenticated User')
                 
+                const destinationsArray = []
+
+                destinations.forEach((destination, index) => {
+                    destinationsArray.push({
+                        address: destination.destination,
+                        lat: destination.lat,
+                        lng: destination.lng,
+                        floor: destinationsDetails[index].floor,
+                        contact: destinationsDetails[index].contact,
+                        phone: destinationsDetails[index].phone,
+                        message: destinationsDetails[index].message
+                    })
+                });
+
                 const newTravel = {
                     origin: {
-                        address: originAddress,
-                        lat: originlat,
-                        lng: originlng,
-                        floor: originFloor,
-                        contact: originContact,
-                        phone: originPhone,
-                        optionalMessage: originMessage
+                        address: origin.origin,
+                        lat: origin.lat,
+                        lng: origin.lng,
+                        floor: originDetails.floor,
+                        contact: originDetails.contact,
+                        phone: originDetails.phone,
+                        optionalMessage: originDetails.message
                     },
-                    destinations: [
-                        {
-                            address: destinationAddress,
-                            lat: destinationlng,
-                            lng: destinationlat,
-                            floor: destinationFloor,
-                            contact: destinationContact,
-                            phone: destinationPhone,
-                            optionalMessage: destinationMessage
-                        }
-                    ],
+                    destinations: destinationsArray,
                     designedDriver: '',
                     designedClient: client.email,
                     delivery,
