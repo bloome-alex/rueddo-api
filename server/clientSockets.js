@@ -47,10 +47,10 @@ export class ClientSockets {
                         address: destination.destination,
                         lat: destination.lat,
                         lng: destination.lng,
-                        floor: destinationsDetails[index].floor,
-                        contact: destinationsDetails[index].contact,
-                        phone: destinationsDetails[index].phone,
-                        message: destinationsDetails[index].message
+                        floor: destinationsDetails[index] ? destinationsDetails[index].floor: '',
+                        contact: destinationsDetails[index] ? destinationsDetails[index].contact: '',
+                        phone: destinationsDetails[index] ? destinationsDetails[index].phone: '',
+                        message: destinationsDetails[index] ? destinationsDetails[index].message: ''
                     })
                 });
 
