@@ -9,6 +9,7 @@ class Server{
         this.port = process.env.PORT
         this.connectToDatabase()
         this.app = express()
+        this.setStaticPages()
         this.http = require('http').Server(this.app)
         this.io = require('socket.io')(this.http, {
             cors: {
@@ -18,6 +19,10 @@ class Server{
         this.middlewares()
         this.routes()
         this.sockets()
+    }
+
+    setStaticPages(){
+        this.app.use(express.static('public'))
     }
 
     connectToDatabase(){
