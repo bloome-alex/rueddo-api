@@ -69,8 +69,17 @@ export const loginUser = async({email, password, authenticatedWithGoogle, role})
     }
 }
 
-export const authenticationUser = ({token}) => {
+export const authenticationUser = async({token}) => {
     const {JWT_SECRET} = process.env
-    
-    return jwt.verify(token, JWT_SECRET)
+    let user = jwt.verify(token, JWT_SECRET)
+
+    const userVerified = await User.findOne({email: user.email})
+
+    user = {
+        email: userVerified.email,
+        role: userVerified.role,
+        driverEnabled: userVerified.driverEnabled
+    }
+
+    return user
 }

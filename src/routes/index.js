@@ -7,7 +7,9 @@ import {
     registerController,
     loginController,
     registerGoogleController,
-    loginGoogleController
+    loginGoogleController,
+    fetchUsersController,
+    updateUserController
 } from '../controllers'
 
 const ApiRoutes = express.Router()
@@ -34,5 +36,9 @@ ApiRoutes.post('/subscribe', async(req, res)=>{
     res.status(200).json()
     console.log('notifiación enviada')
 })
+
+ApiRoutes.get('/fetch-users', fetchUsersController)
+
+ApiRoutes.post('/update-user', updateUserController)
 
 export {ApiRoutes}

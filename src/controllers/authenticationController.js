@@ -1,9 +1,9 @@
 import { authenticationUser } from "../services/UserServices"
 
-export const authenticationController = (request, response) => {
+export const authenticationController = async(request, response) => {
     const { token } = request.body
 
-    const user = authenticationUser({token})  
+    const user = await authenticationUser({token})  
 
     response.status(200).json({
         message: 'autenticado correctamente',

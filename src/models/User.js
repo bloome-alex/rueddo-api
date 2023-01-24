@@ -53,7 +53,8 @@ const UserSchema = new mongoose.Schema({
   authenticatedWithGoogle: {type: Boolean, required: false, index: false},
   role: {type: String, enum: ['DRIVER', 'CLIENT']},
   driverDetails: driverDetailsSchema,
-  clientDetails: clientDetailsSchema
+  clientDetails: clientDetailsSchema,
+  driverEnabled: { type: Boolean, required: false, index: false, defualt: false }
 }, {timestamps: true})
 
 export const User = mongoose.model('User', UserSchema)
