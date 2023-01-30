@@ -29,7 +29,8 @@ const TravelSchema = new mongoose.Schema({
     vehicle: {type: String, required: false, index: false},
     help: {type: String, required: false, index: false},
     methodOfPay: {type: String, required: false, index: false},
-    payLocation: {type: String, required: false, index: false}
+    payLocation: {type: String, required: false, index: false},
+    status: {type: String, required: false, default: 'CREATED', index: false}
 }, {timestamps: true})
 
 export const Travel = mongoose.model('Travel', TravelSchema)

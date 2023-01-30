@@ -9,6 +9,7 @@ class Server{
         this.port = process.env.PORT
         this.connectToDatabase()
         this.app = express()
+        this.middlewares()
         this.setStaticPages()
         this.http = require('http').Server(this.app)
         this.io = require('socket.io')(this.http, {
@@ -16,7 +17,6 @@ class Server{
                 origin: '*'
             }
         })
-        this.middlewares()
         this.routes()
         this.sockets()
     }
@@ -43,6 +43,7 @@ class Server{
             const driverSockets = new DriverSockets(socket, this.io)
             driverSockets.driverConnected()
             driverSockets.acceptTravel()
+            driverSockets.driverArriving()    
         })
     }
 

@@ -12,8 +12,15 @@ export const createTravel = async ({
         vehicle,
         methodOfPay,
         payLocation,
-        help
+        help,
+        status: 'CREATED'
     })
 
+    return await travel.save()
+}
+
+export const rejectTravel = async ({id}) => {
+    const travel = await Travel.findById(id)
+    travel.status = 'REJECTED'
     return await travel.save()
 }

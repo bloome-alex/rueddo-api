@@ -1,3 +1,4 @@
+import { rejectTravel } from '../src/services/TravelServices'
 import { authenticationUser } from '../src/services/UserServices'
 
 export class DriverSockets{
@@ -24,6 +25,19 @@ export class DriverSockets{
         this.socket.on('accept_travel', ()=> {
 
             this.io.emit('CLIENT_TRAVEL_ACCEPTED')
+        })
+    }
+
+    rejectTravel(){
+        this.socket.on('TRAVEL::REJECT', ({id}) => {
+            rejectTravel({id})
+            this.io.emit('CLIENT::TRAVEL-REJECTED', {id})
+        })
+    }
+
+    driverArriving(){
+        this.socket.on('DRIVER::ARRIVING', (address) => {
+            this.io.emit('CLIENT_DRIVER_ARRIVING', address)
         })
     }
 
