@@ -11,6 +11,9 @@ import {
     fetchUsersController,
     updateUserController
 } from '../controllers'
+import { fetchTravelByDesignedClientController } from '../controllers/Travel/fetchTravelByDesignedClient'
+import { fetchTravelByDesignedDriverController } from '../controllers/Travel/fetchTravelByDesignedDriver'
+import { getTravelByIdController } from '../controllers/Travel/getTravelByIdController'
 
 const ApiRoutes = express.Router()
 
@@ -31,14 +34,17 @@ ApiRoutes.post('/auth',
 
 ApiRoutes.post('/subscribe', async(req, res)=>{
     let pushSubscriptions = req.body
-    console.log('sub: ', pushSubscriptions)
     fs.writeFileSync('./src/webpush/subscription.json', JSON.stringify(pushSubscriptions))
     res.status(200).json()
-    console.log('notifiación enviada')
 })
 
 ApiRoutes.get('/fetch-users', fetchUsersController)
 
 ApiRoutes.post('/update-user', updateUserController)
+
+ApiRoutes.post('/client-travels', fetchTravelByDesignedClientController)
+ApiRoutes.post('/driver-travels', fetchTravelByDesignedDriverController)
+
+ApiRoutes.get('/travel/:id', getTravelByIdController)
 
 export {ApiRoutes}

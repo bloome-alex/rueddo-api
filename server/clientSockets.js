@@ -26,18 +26,17 @@ export class ClientSockets {
 
     clientCancelNeedVehicle(){
         this.socket.on('client_cancel_need_vehicle', ()=>{
-            console.log('el cliente cancelo el viaje')
             this.io.emit('client_cancel_need_vehicle')
         })
     }
 
     clientNeedVehicle(){
         this.socket.on('client_need_vehicle', async ({client: token, travel})=>{
-            console.log('travel: ', travel)
             try {
                 const {origin, destinations, originDetails, destinationsDetails, delivery, vehicle, help, floors, secure, methodOfPay, payLocation} = travel
 
-                const client = authenticationUser({token})
+                const client = await authenticationUser({token})
+
                 if(!client) throw new Error('Unauthenticated User')
                 
                 const destinationsArray = []
