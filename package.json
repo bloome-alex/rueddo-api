@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "BABEL_DISABLE_CACHE=1 babel-node src/index.js --exec js",
-    "dev": "BABEL_DISABLE_CACHE=1 nodemon src/index.js --exec babel-node -e js"
+    "dev": "BABEL_DISABLE_CACHE=1 nodemon src/index.js --exec babel-node -e js",
+    "dev:windows": "set BABEL_DISABLE_CACHE=1 && nodemon src/index.js --exec babel-node -e js",
+    "vapid": "web-push generate-vapid-keys"
   },
   "keywords": [],
   "author": "Valdiviezo Alex",
