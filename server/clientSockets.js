@@ -25,33 +25,30 @@ export class ClientSockets {
     }
 
     clientCancelNeedVehicle(){
-        this.socket.on('client_cancel_need_vehicle', ()=>{
+        this.socket.on('client_cancel_need_vehicle', () =>{
             this.io.emit('client_cancel_need_vehicle')
         })
     }
 
     clientNeedVehicle(){
-        this.socket.on('client_need_vehicle', async ({client: token, travel})=>{
+        this.socket.on('client_need_vehicle', async ({client: token, travel, clientSocket})=>{
             try {
-                const {origin, destinations, originDetails, destinationsDetails, delivery, vehicle, help, floors, secure, methodOfPay, payLocation} = travel
+                const {origin, destinations, originDetails, destinationsDetails, delivery, vehicle, help, floors, secure, methodOfPay, payLocation, date} = travel
 
-                const client = await authenticationUser({token})
+                const client = await authenticationUser({ token})
 
                 if(!client) throw new Error('Unauthenticated User')
-                
-                const destinationsArray = []
+            
 
-                destinations.forEach((destination, index) => {
-                    destinationsArray.push({
-                        address: destination.destination,
-                        lat: destination.lat,
-                        lng: destination.lng,
-                        floor: destinationsDetails[index] ? destinationsDetails[index].floor: '',
-                        contact: destinationsDetails[index] ? destinationsDetails[index].contact: '',
-                        phone: destinationsDetails[index] ? destinationsDetails[index].phone: '',
-                        message: destinationsDetails[index] ? destinationsDetails[index].message: ''
-                    })
-                });
+                const destinationsArray = destinations.map((destination, index) => ({
+                    address: destination.destination,
+                    lat: destination.lat,
+                    lng: destination.lng,
+                    floor: destinationsDetails[index]?.floor || '',
+                    contact: destinationsDetails[index]?.contact || '',
+                    phone: destinationsDetails[index]?.phone || '',
+                    message: destinationsDetails[index]?.message || ''
+                }))
 
                 const newTravel = {
                     origin: {
@@ -70,9 +67,9 @@ export class ClientSockets {
                     vehicle,
                     methodOfPay,
                     payLocation,
-                    help
+                    help,
+                    date
                 }
-
                 const travelCreated = await createTravel(newTravel)
 
                 const subscription = JSON.parse(fs.readFileSync('./src/webpush/subscription.json'))
@@ -81,10 +78,17 @@ export class ClientSockets {
                     title: 'Oportunidad de Viaje!'
                 }))
 
-                this.io.emit('driver_new_travel', travelCreated)
+                this.io.to(clientSocket).emit("TRAVEL_CREATED", { id: travelCreated._id })
+                this.io.emit('CLIENT_SEARCH_DRIVERS', { travel: travelCreated, clientSocket })
             } catch (error) {
                 console.log('error: ', error)
             }
+        })
+    }
+
+    clientProposalDriver(){
+        this.socket.on("client_travel_order", ({ socketId, travel, clientSocket }) => {
+            this.io.to(socketId).emit("driver_new_travel", { travel, clientSocket })
         })
     }
 }

@@ -1,8 +1,9 @@
 import { Travel } from '../models/Travel'
 
 export const createTravel = async ({
-    origin, destinations, designedDriver, designedClient, delivery, vehicle, help, methodOfPay, payLocation
+    origin, destinations, designedDriver, designedClient, delivery, vehicle, help, methodOfPay, payLocation, date
 }) => {
+    console.log(date)
     const travel = new Travel({
         origin,
         destinations,
@@ -13,6 +14,7 @@ export const createTravel = async ({
         methodOfPay,
         payLocation,
         help,
+        date,
         status: 'CREATED'
     })
 
@@ -25,8 +27,9 @@ export const rejectTravel = async ({id}) => {
     return await travel.save()
 }
 
-export const fetchTravelByDesignedClient = async ({clientEmail}) => {
-    return await Travel.find({designedClient: clientEmail})
+export const fetchTravelByDesignedClient = async ({clientEmail}, filters = []) => {
+    const extraFilters = Object.entries(filters).map(({ key, value }) => ({ key, value }))
+    return await Travel.find({ $and: [{designedClient: clientEmail}, ...extraFilters] })
 }
 
 export const fetchTravelByDesignedDriver = async({driverEmail}) => {

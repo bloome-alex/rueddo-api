@@ -26,6 +26,7 @@ const TravelSchema = new mongoose.Schema({
     designedDriver: {type: String, required: false, index: false},
     designedClient: {type: String, required: false, index: false},
     delivery: {type: String, required: true, index: false},
+    date: { type: String, required: false, index: false },
     vehicle: {type: String, required: false, index: false},
     help: {type: String, required: false, index: false},
     methodOfPay: {type: String, required: false, index: false},

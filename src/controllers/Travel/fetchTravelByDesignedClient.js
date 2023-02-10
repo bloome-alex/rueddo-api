@@ -3,7 +3,7 @@ import { authenticationUser } from '../../services/UserServices'
 
 export const fetchTravelByDesignedClientController = async (req, res) => {
     try {
-        const {token} = req.body
+        const {token, ...filters} = req.body
 
         const {email: clientEmail} = await authenticationUser({token})
 
@@ -13,7 +13,7 @@ export const fetchTravelByDesignedClientController = async (req, res) => {
             })
         }
     
-        const travels = await fetchTravelByDesignedClient({clientEmail})
+        const travels = await fetchTravelByDesignedClient({clientEmail}, filters)
     
         return res.status(200).json({
             travels

@@ -37,13 +37,16 @@ class Server{
             clientSockets.clientConnected()
             clientSockets.clientNeedVehicle()
             clientSockets.clientCancelNeedVehicle()
-
+            clientSockets.clientProposalDriver()
             //driver sockets declaration
 
             const driverSockets = new DriverSockets(socket, this.io)
             driverSockets.driverConnected()
             driverSockets.acceptTravel()
-            driverSockets.driverArriving()    
+            driverSockets.driverArriving()   
+            driverSockets.driverDownloading() 
+            driverSockets.driverLocation    ()
+            driverSockets.rejectTravel()
         })
     }
 
