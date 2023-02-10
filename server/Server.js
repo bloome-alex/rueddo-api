@@ -13,7 +13,10 @@ class Server{
         this.setStaticPages()
         this.http = require('http').Server(this.app)
         this.io = require('socket.io')(this.http, {
-            origins: ["https://rueddo-vuelder-production.up.railway.app", "https://rueddo-mobile-production.up.railway.app"],
+            cors: {
+                origin: false,
+                methods: ["GET", "POST"],
+            }
         })
         this.routes()
         this.sockets()
