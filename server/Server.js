@@ -52,16 +52,15 @@ class Server{
     }
 
     middlewares(){
-        this.app.use(cors())
-        this.app.use(express.json())
         this.app.use((req, res, next) => {
-            res.header("Access-Control-Allow-Origin", "*"); 
+            res.header("Access-Control-Allow-Origin", "https://rueddo-vuelder-production.up.railway.app"); 
             res.header('Access-Control-Allow-Credentials', false);
             res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method, Access-Control-Allow-Credentials');
             res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
             res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
             next();
         });
+        this.app.use(express.json())
     }
 
     routes(){
