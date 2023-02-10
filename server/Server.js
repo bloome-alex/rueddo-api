@@ -14,7 +14,8 @@ class Server{
         this.http = require('http').Server(this.app)
         this.io = require('socket.io')(this.http, {
             cors: {
-                origin: '*'
+                origin: ["https://rueddo-vuelder-production.up.railway.app", "https://rueddo-mobile-production.up.railway.app"],
+                methods: ["GET", "POST"],
             }
         })
         this.routes()
