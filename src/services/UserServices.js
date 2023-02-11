@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken'
 
 export const existEmail = async({email}) => {
     const user = await User.findOne({email})
-    console.log('user: ', user)
     if(user) return true
     return false
 }
@@ -40,8 +39,6 @@ export const loginUser = async({email, password, authenticatedWithGoogle, role})
 
         let user = await User.findOne({email})
 
-        console.log('user loginUser: ', user)
-
         if(!user && authenticatedWithGoogle) user = await registreUserWithGoogle({email, role})
 
         if(authenticatedWithGoogle && user.authenticatedWithGoogle){
@@ -64,7 +61,6 @@ export const loginUser = async({email, password, authenticatedWithGoogle, role})
         if(token != null) return token
         return false
     } catch (error) {
-        console.log('error: ', error)
         return false
     }
 }

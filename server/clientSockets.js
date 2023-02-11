@@ -35,7 +35,7 @@ export class ClientSockets {
             try {
                 const {origin, destinations, originDetails, destinationsDetails, delivery, vehicle, help, floors, secure, methodOfPay, payLocation, date} = travel
 
-                const client = await authenticationUser({ token})
+                const client = await authenticationUser({token})
 
                 if(!client) throw new Error('Unauthenticated User')
             
@@ -71,12 +71,6 @@ export class ClientSockets {
                     date
                 }
                 const travelCreated = await createTravel(newTravel)
-
-                const subscription = JSON.parse(fs.readFileSync('./src/webpush/subscription.json'))
-
-                webpush.sendNotification(subscription, JSON.stringify({
-                    title: 'Oportunidad de Viaje!'
-                }))
 
                 this.io.to(clientSocket).emit("TRAVEL_CREATED", { id: travelCreated._id })
                 this.io.emit('CLIENT_SEARCH_DRIVERS', { travel: travelCreated, clientSocket })

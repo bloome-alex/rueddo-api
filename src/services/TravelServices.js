@@ -3,7 +3,6 @@ import { Travel } from '../models/Travel'
 export const createTravel = async ({
     origin, destinations, designedDriver, designedClient, delivery, vehicle, help, methodOfPay, payLocation, date
 }) => {
-    console.log(date)
     const travel = new Travel({
         origin,
         destinations,
