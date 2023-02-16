@@ -1,6 +1,5 @@
 import express from 'express'
 import { body } from 'express-validator'
-import fs from 'fs'
 
 import {
     authenticationController,
@@ -11,8 +10,10 @@ import {
     fetchUsersController,
     updateUserController
 } from '../controllers'
+import { recoveryUserController, validCodeController } from '../controllers/recoveryUserController'
 import { fetchTravelByDesignedClientController } from '../controllers/Travel/fetchTravelByDesignedClient'
 import { fetchTravelByDesignedDriverController } from '../controllers/Travel/fetchTravelByDesignedDriver'
+import { fetchTravelsController } from '../controllers/Travel/fetchTravelsController'
 import { getTravelByIdController } from '../controllers/Travel/getTravelByIdController'
 
 const ApiRoutes = express.Router()
@@ -34,8 +35,7 @@ ApiRoutes.post('/auth',
 
 ApiRoutes.post('/subscribe', async(req, res)=>{
     let pushSubscriptions = req.body
-    fs.writeFileSync('./src/webpush/subscription.json', JSON.stringify(pushSubscriptions))
-    res.status(200).json()
+    res.status(200).json(pushSubscriptions)
 })
 
 ApiRoutes.get('/fetch-users', fetchUsersController)
@@ -46,5 +46,10 @@ ApiRoutes.post('/client-travels', fetchTravelByDesignedClientController)
 ApiRoutes.post('/driver-travels', fetchTravelByDesignedDriverController)
 
 ApiRoutes.get('/travel/:id', getTravelByIdController)
+
+ApiRoutes.get('/fetch-travels', fetchTravelsController)
+
+ApiRoutes.post('/recovery-user', recoveryUserController)
+ApiRoutes.post('/recovery-user/code', validCodeController)
 
 export {ApiRoutes}

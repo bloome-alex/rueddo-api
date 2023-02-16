@@ -3,7 +3,14 @@ import { existEmail, loginUser, registreUserWithGoogle } from '../services/UserS
 export const registerGoogleController = async(request, response) => {
     const {name, surname, email, role} = request.body
 
+    console.log('name: ', name)
+
+    console.log('surname: ', surname)
+
+    console.log('email: ', email)
+
     const emailExists = await existEmail({email})
+    console.log(emailExists)
 
     if(emailExists) return response.status(402).json({
         msg: 'Email has existed in this system.',

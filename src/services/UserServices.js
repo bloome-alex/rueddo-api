@@ -1,9 +1,39 @@
 import { User } from "../models/User"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { transporter } from "./mailer"
+
+const generateRandomString = (num) => {
+    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result1= ' ';
+    const charactersLength = characters.length;
+    for ( let i = 0; i < num; i++ ) {
+        result1 += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result1;
+}
+
+export const recoveryUser = async(email) => {
+    try {
+        const code = generateRandomString(8)
+        await transporter.sendMail({
+            from: '"Forgot Password " <Servicios-Rueddo@rueddo.com>',
+            to: email,
+            Subject: 'Forgot Password',
+            html: `
+                <b>Tu código de recuperación es: <h2>${code}</h2></b>
+            `
+        })
+        return code
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 
 export const existEmail = async({email}) => {
     const user = await User.findOne({email})
+    console.log('user: ', user)
     if(user) return true
     return false
 }
@@ -34,35 +64,33 @@ export const registerUser = async({email, password, role, details}) => {
 }
 
 export const loginUser = async({email, password, authenticatedWithGoogle, role}) => {
-    try {
-        const {JWT_SECRET} = process.env
+    const {JWT_SECRET} = process.env
 
-        let user = await User.findOne({email})
+    let user = await User.findOne({email})
 
-        if(!user && authenticatedWithGoogle) user = await registreUserWithGoogle({email, role})
+    if(!user && authenticatedWithGoogle) user = await registreUserWithGoogle({email, role})
 
-        if(authenticatedWithGoogle && user.authenticatedWithGoogle){
-            let token = null
-            token = jwt.sign({
-                email: email,
-                role: user.role
-            }, JWT_SECRET)
-            if(token != null) return token
-            return false
-        }
+    if(authenticatedWithGoogle && !user.authenticatedWithGoogle) throw new Error('Esta cuenta pertenece a un usuario con contraseña ingrese manualmente')
 
+    if(authenticatedWithGoogle && user.authenticatedWithGoogle){
         let token = null
-        const result = bcrypt.compareSync(password, user.password)
-        if(result) token = jwt.sign({
+        token = jwt.sign({
             email: email,
             role: user.role
         }, JWT_SECRET)
-    
         if(token != null) return token
         return false
-    } catch (error) {
-        return false
     }
+
+    let token = null
+    const result = bcrypt.compareSync(password, user.password)
+    if(result) token = jwt.sign({
+        email: email,
+        role: user.role
+    }, JWT_SECRET)
+
+    if(token != null) return token
+    return false
 }
 
 export const authenticationUser = async({token}) => {

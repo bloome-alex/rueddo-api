@@ -3,6 +3,7 @@ import { Travel } from '../models/Travel'
 export const createTravel = async ({
     origin, destinations, designedDriver, designedClient, delivery, vehicle, help, methodOfPay, payLocation, date
 }) => {
+    console.log(date)
     const travel = new Travel({
         origin,
         destinations,
@@ -43,4 +44,8 @@ export const travelUpdateDesignedDriver = async({id, driverEmail}) => {
 
 export const getTravelById = async(id) => {
     return await Travel.findById(id)
+}
+
+export const fetchTravels = async() => {
+    return await Travel.find({})
 }

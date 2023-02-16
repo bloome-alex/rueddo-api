@@ -1,6 +1,3 @@
-import fs from 'fs'
-import webpush from '../src/webpush'
-
 import { createTravel } from '../src/services/TravelServices'
 import { authenticationUser } from '../src/services/UserServices'
 
@@ -35,7 +32,7 @@ export class ClientSockets {
             try {
                 const {origin, destinations, originDetails, destinationsDetails, delivery, vehicle, help, floors, secure, methodOfPay, payLocation, date} = travel
 
-                const client = await authenticationUser({token})
+                const client = await authenticationUser({ token})
 
                 if(!client) throw new Error('Unauthenticated User')
             

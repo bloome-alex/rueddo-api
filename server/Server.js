@@ -14,8 +14,7 @@ class Server{
         this.http = require('http').Server(this.app)
         this.io = require('socket.io')(this.http, {
             cors: {
-                origin: true,
-                methods: ["GET", "POST", "PUT"],
+                origin: '*'
             }
         })
         this.routes()
@@ -32,6 +31,7 @@ class Server{
 
     sockets(){
         this.io.on('connection', (socket)=>{
+            console.log('nuevo socket: ', socket.id)
             //client sockets declaration
             const clientSockets = new ClientSockets(socket, this.io)
             clientSockets.clientConnected()

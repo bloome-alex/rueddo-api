@@ -10,7 +10,7 @@
     "vapid": "web-push generate-vapid-keys"
   },
   "keywords": [],
-  "author": "Valdiviezo Alex & @vuelder team",
+  "author": "Valdiviezo Alex",
   "license": "ISC",
   "dependencies": {
     "@babel/cli": "^7.8.4",
@@ -33,7 +33,6 @@
     "nodemailer": "^6.8.0",
     "nodemon": "^1.19.4",
     "socket.io": "^4.5.4",
-    "supertest": "^6.3.1",
-    "web-push": "^3.5.0"
+    "supertest": "^6.3.1"
   }
 }

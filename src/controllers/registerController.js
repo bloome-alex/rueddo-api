@@ -17,11 +17,13 @@ export const registerController = async(request, response) => {
 
     bcrypt.hash(password, 10).then(async(hash)=>{
         const user = await registerUser({email, password: hash, role, details})
+        console.log('user: ', user)
         return response.status(200).json({
             message: 'Usuario creado con exito',
             user
         })
     }).catch((error) => {
+        console.log('Sucedió un error en registerController -> ', error)
         return response.status(500).json({
             message: 'Sucedió un error en registerController',
             error
